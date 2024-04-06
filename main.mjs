@@ -2,11 +2,6 @@ import { mergeSort } from "./mergeSorter.mjs";
 
 
 console.log('bst working test');
-testOne();
-
-
-
-
 
 
 
@@ -134,31 +129,13 @@ class Tree{
         checkInsert(this.root);
 
 
-
-        // function checkInsert(current){
-        //     if(!current){
-        //         return true;
-        //     }
-        //     else{
-        //         if(value > current.data){
-        //             checkInsert(current.rightChild);
-        //         }
-        //         else if(value < current.data){
-        //             checkInsert(current.leftChild);
-        //         }
-        //         else{
-        //             console.log('inserting duplicate, do nothing');
-        //         }
-        //     }
-        // }
-        // checkInsert(this.root);
-
         /*
             starting at root, check >||<, if greater than go right, if not go left
             if ever find a duplicate just like. stop existing.
             continue until there IS no right or left where you're looking, and insert
         */
     }
+
 
     // deleteVal searches for a value and deletes it
     // deleteNode is the nested, actual deletion part of that process
@@ -392,7 +369,41 @@ class Tree{
     // -height(node) function that returns the given node's height. Height is defined as the number 
     //     of edges in the longest path from a given node to a leaf node.
     height(node){
-        
+        let heightCount = 0;
+
+        function checkChildren(nodes){
+            const children = [];
+            let leafFound = false;
+            
+
+            for(const nodeC of nodes){
+                if(leafFound == true){
+                    console.log('Tree.height has an issue');
+                }
+
+                if(nodeC.leftChild == null){
+                    if(nodeC.rightChild == null){
+                        leafFound = true;
+                        break;
+                    }
+                    else{
+                        children.push(nodeC.rightChild)
+                    }
+                }
+                else{
+                    children.push(nodeC.leftChild);
+                }
+            }
+
+            if(leafFound == false){
+                heightCount += 1;
+                checkChildren(children);
+            }
+        }
+        checkChildren([node]);
+
+
+        return heightCount;
     }
 
 
@@ -419,10 +430,16 @@ class Tree{
 // prettyPrint(new Tree(createNumberArray()).root);
 // console.log('--------');
 
-// const testTree = new Tree([1,2,4,7,9,10,11,13,16,19,20,21]);
-const testTree = new Tree([1,2,4,7,9,10]);
+const testTree = new Tree([1,2,4,7,9,10,11,13,16,19,20,21]);
+// const testTree = new Tree([1,2,4,7,9,10]);
 prettyPrint(testTree.root);
 console.log('--------');
+
+
+// console.log('10 height is: ' + testTree.height(testTree.find(10)));
+// console.log('4 height is: ' + testTree.height(testTree.find(4))); 
+// console.log('20 height is: ' + testTree.height(testTree.find(20)));
+// console.log('9 height is: ' + testTree.height(testTree.find(9)));
 
 {// testTree.insert(3);
 // prettyPrint(testTree.root);

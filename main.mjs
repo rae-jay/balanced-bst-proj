@@ -409,6 +409,39 @@ class Tree{
 
     // -depth(node) function that returns the given node's depth. Depth is defined as the number 
     //     of edges in the path from a given node to the tree's root node.
+
+    depth(node){
+        let depthCount = 0;
+        let nodeFound = false;
+
+        function checkNodes(nodes){
+            const children = [];
+
+            for(const nodeC of nodes){
+                if(nodeC == node){
+                    nodeFound = true;
+                    break;
+                }
+                else{
+                    if(nodeC.leftChild) children.push(nodeC.leftChild);
+                    if(nodeC.rightChild) children.push(nodeC.rightChild);
+                }
+            }
+
+            if(nodeFound == false && children.length > 0){
+                depthCount += 1;
+                checkNodes(children);
+            }
+        }
+        checkNodes([this.root]);
+
+        if(nodeFound == true){
+            return depthCount;
+        }
+        else{
+            return -1;
+        }
+    }
 }
 
 
@@ -440,6 +473,12 @@ console.log('--------');
 // console.log('4 height is: ' + testTree.height(testTree.find(4))); 
 // console.log('20 height is: ' + testTree.height(testTree.find(20)));
 // console.log('9 height is: ' + testTree.height(testTree.find(9)));
+
+console.log('10 depth is: ' + testTree.depth(testTree.find(10)));
+console.log('4 depth is: ' + testTree.depth(testTree.find(4))); 
+console.log('20 depth is: ' + testTree.depth(testTree.find(20)));
+console.log('9 depth is: ' + testTree.depth(testTree.find(9)));
+
 
 {// testTree.insert(3);
 // prettyPrint(testTree.root);

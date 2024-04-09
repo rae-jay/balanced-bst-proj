@@ -442,6 +442,50 @@ class Tree{
             return -1;
         }
     }
+
+
+    isBalanced(){
+
+        function checkBalance(current){
+            // if parent node's child is null
+            if(!current) return [-1, true];
+            
+            const [leftHeight, leftBal] = checkBalance(current.leftChild);
+            const [rightHeight, rightBal] = checkBalance(current.rightChild);
+
+            if(leftBal == true && rightBal == true){
+                const dif = leftHeight - rightHeight;
+                if(dif >= -1 && dif <= 1){
+                    // subtrees of 'current' are themselves balanced
+                    // and differ in height by 1 or less
+                    let currentHeight;
+                    if(rightHeight > leftHeight) currentHeight = rightHeight;
+                    else currentHeight = leftHeight;
+                    // current height is height of the tallest direct child +1
+                    currentHeight += 1;
+
+                    return [currentHeight, true];
+                }
+
+                // this node's left/right are not balanced, so fail
+                return [undefined, false];
+            }
+            // subtrees are already unbalanced, so fail
+            return [undefined, false];
+
+        }
+        const result = checkBalance(this.root);
+
+        return result[1];
+    }
+
+    
+    rebalance(){
+        const array = this.inOrder();
+        this.root = Tree.buildTree(array, 0, array.length - 1);
+    }
+    // -rebalance function that rebalances an unbalanced tree. Tip: You'll want to use a traversal 
+    //     method to provide a new array to the buildTree function.
 }
 
 
@@ -463,10 +507,33 @@ class Tree{
 // prettyPrint(new Tree(createNumberArray()).root);
 // console.log('--------');
 
-const testTree = new Tree([1,2,4,7,9,10,11,13,16,19,20,21]);
+// const testTree = new Tree([1,2,4,7,9,10,11,13,16,19,20,21]);
 // const testTree = new Tree([1,2,4,7,9,10]);
-prettyPrint(testTree.root);
-console.log('--------');
+// prettyPrint(testTree.root);
+// console.log('--------');
+
+// testTree.insert(14);
+// testTree.insert(15);
+// testTree.insert(16);
+// testTree.insert(17);
+// testTree.insert(18);
+// testTree.insert(19);
+// testTree.insert(21);
+// prettyPrint(testTree.root);
+// console.log('--------');
+
+// console.log(testTree.isBalanced());
+// // console.log(testTree.inOrder());
+// testTree.rebalance();
+// prettyPrint(testTree.root);
+// console.log('--------');
+// console.log(testTree.isBalanced());
+
+
+
+
+// console.log(testTree.height(testTree.find(9)));
+// console.log(testTree.height(testTree.find(1)));
 
 
 // console.log('10 height is: ' + testTree.height(testTree.find(10)));
@@ -474,10 +541,10 @@ console.log('--------');
 // console.log('20 height is: ' + testTree.height(testTree.find(20)));
 // console.log('9 height is: ' + testTree.height(testTree.find(9)));
 
-console.log('10 depth is: ' + testTree.depth(testTree.find(10)));
-console.log('4 depth is: ' + testTree.depth(testTree.find(4))); 
-console.log('20 depth is: ' + testTree.depth(testTree.find(20)));
-console.log('9 depth is: ' + testTree.depth(testTree.find(9)));
+// console.log('10 depth is: ' + testTree.depth(testTree.find(10)));
+// console.log('4 depth is: ' + testTree.depth(testTree.find(4))); 
+// console.log('20 depth is: ' + testTree.depth(testTree.find(20)));
+// console.log('9 depth is: ' + testTree.depth(testTree.find(9)));
 
 
 {// testTree.insert(3);
@@ -519,19 +586,3 @@ console.log('9 depth is: ' + testTree.depth(testTree.find(9)));
 }
 
 
-
-
-/*
-
-    
-    -height(node) function that returns the given node's height. Height is defined as the number 
-        of edges in the longest path from a given node to a leaf node.
-    -depth(node) function that returns the given node's depth. Depth is defined as the number 
-        of edges in the path from a given node to the tree's root node.
-    
-    -isBalanced function that checks if the tree is balanced. A balanced tree is one where the 
-        difference between heights of the left subtree and the right subtree of every node is 
-        not more than 1.
-    -rebalance function that rebalances an unbalanced tree. Tip: You'll want to use a traversal 
-        method to provide a new array to the buildTree function.
-*/
